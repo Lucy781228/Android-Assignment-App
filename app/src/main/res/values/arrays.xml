@@ -1,0 +1,7 @@
+<resources>
+    <array name="spinner_items">
+        <item>Khẩn cấp</item>
+        <item>Quan trọng</item>
+        <item>Bình thường</item>
+    </array>
+</resources>

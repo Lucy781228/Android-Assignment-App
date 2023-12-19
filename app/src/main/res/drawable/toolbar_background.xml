@@ -1,0 +1,8 @@
+<!-- res/drawable/toolbar_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background color -->
+    <solid android:color="#DBE3E8"/> <!-- Replace with your desired color code -->
+
+    <!-- Border -->
+    <corners android:radius="32dp"/> <!-- Optional: Add rounded corners -->
+</shape>

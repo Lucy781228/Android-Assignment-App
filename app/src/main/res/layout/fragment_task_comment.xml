@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".TaskFragmentComment">
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/commentContainer"
+        android:padding="16dp"/>
+
+    <!-- Container for EditText and Button at the bottom -->
+    <RelativeLayout
+        android:id="@+id/commentContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <!-- EditText for entering comments -->
+        <EditText
+            android:id="@+id/editTextComment"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="Enter your comment"/>
+
+        <!-- Button to submit the comment -->
+        <Button
+            android:id="@+id/buttonSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/editTextComment"
+            android:layout_alignParentEnd="true"
+            android:text="Submit"/>
+    </RelativeLayout>
+
+</RelativeLayout>

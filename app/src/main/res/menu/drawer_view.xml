@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/info"
+            android:title="@string/logout"
+            android:onClick="onLogoutClicked" />
+        <item
+            android:id="@+id/information"
+            android:icon="@drawable/info"
+            android:title="@string/more_info"
+            android:onClick="onInformationClicked" />
+        <item
+            android:id="@+id/add_work"
+            android:icon="@drawable/add"
+            android:title="@string/new_work"
+            android:onClick="onAddWorkClicked" />
+        <item
+            android:id="@+id/personal"
+            android:icon="@drawable/work"
+            android:title="@string/default_work"
+            android:onClick="onPersonalClicked" />
+
+    </group>
+</menu>
