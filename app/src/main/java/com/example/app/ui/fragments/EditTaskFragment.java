@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.ui.fragments;
 
 import android.os.Bundle;
 
@@ -9,16 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.app.R;
 import com.example.app.database.model.Task;
 import com.example.app.databinding.FragmentTaskEditBinding;
 
-public class TaskFragmentEdit extends Fragment {
+public class EditTaskFragment extends Fragment {
 
     private Task task;
     private  String startDate, endDate;
     private FragmentTaskEditBinding binding;
 
-    public TaskFragmentEdit(Task task, String startDate, String endDate) {
+    public EditTaskFragment(Task task, String startDate, String endDate) {
         this.task = task;
         this.endDate = endDate;
         this.startDate = startDate;

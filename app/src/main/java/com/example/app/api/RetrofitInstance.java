@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitInstance {
     private static Retrofit retrofit = null;
-    private static String BASE_URL = "http://192.168.1.144:8080/apps/kmaassignwork/";
+    private static final String BASE_URL = "http://192.168.1.144:8080/apps/kmaassignwork/";
 
     //singleton pattern
     public static AndroidNCApi getService() {

@@ -1,17 +1,17 @@
-package com.example.app;
+package com.example.app.ui.fragments;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.app.R;
+import com.example.app.utils.VerticalSpaceItemDecoration;
 import com.example.app.adapter.TaskListAdapter;
 import com.example.app.database.model.Task;
 

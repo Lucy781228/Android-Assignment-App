@@ -7,7 +7,7 @@
             type="com.example.app.database.model.WorkItem" />
         <variable
             name="activity"
-            type="com.example.app.MainActivity2" />
+            type="com.example.app.ui.activities.MainActivity" />
     </data>
 
     <LinearLayout

@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.ui.fragments;
 
 import android.os.Bundle;
 
@@ -8,12 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.app.R;
+
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link TaskFragmentFile#newInstance} factory method to
+ * Use the {@link FileTaskFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class TaskFragmentFile extends Fragment {
+public class FileTaskFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +26,7 @@ public class TaskFragmentFile extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public TaskFragmentFile() {
+    public FileTaskFragment() {
         // Required empty public constructor
     }
 
@@ -37,8 +39,8 @@ public class TaskFragmentFile extends Fragment {
      * @return A new instance of fragment TaskFragmentFile.
      */
     // TODO: Rename and change types and number of parameters
-    public static TaskFragmentFile newInstance(String param1, String param2) {
-        TaskFragmentFile fragment = new TaskFragmentFile();
+    public static FileTaskFragment newInstance(String param1, String param2) {
+        FileTaskFragment fragment = new FileTaskFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

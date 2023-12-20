@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.example.app.MainActivity2;
 import com.example.app.R;
+import com.example.app.ui.activities.MainActivity;
 import com.example.app.database.model.Task;
 import com.example.app.databinding.ListItemTaskBinding;
 
@@ -72,7 +72,7 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
                 @Override
                 public void onClick(View v) {
                     Task currentTask = taskList.get(getAdapterPosition());
-                    ((MainActivity2) v.getContext()).showTaskDetailsDialog(currentTask);
+                    ((MainActivity) v.getContext()).showTaskDetailsDialog(currentTask);
                 }
             });
 

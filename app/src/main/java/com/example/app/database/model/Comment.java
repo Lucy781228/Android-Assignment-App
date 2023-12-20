@@ -2,7 +2,6 @@ package com.example.app.database.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -10,7 +9,6 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "kma_comment")
 public class Comment {
     @PrimaryKey
-    @NonNull
     @SerializedName("comment_id")
     @Expose
     private int comment_id;
@@ -24,14 +22,13 @@ public class Comment {
     @Expose
     private String message;
 
-    public Comment(@NonNull int comment_id, int task_id, String user_create, String message) {
+    public Comment(int comment_id, int task_id, String user_create, String message) {
         this.comment_id = comment_id;
         this.task_id = task_id;
         this.user_create = user_create;
         this.message = message;
     }
 
-    @NonNull
     public int getComment_id() {
         return comment_id;
     }

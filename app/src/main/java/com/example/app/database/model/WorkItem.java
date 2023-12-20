@@ -2,8 +2,6 @@ package com.example.app.database.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
-import java.util.Date;
 
 @Entity(tableName = "kma_work_item")
 public class WorkItem {

@@ -2,7 +2,6 @@ package com.example.app.database.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
 
 @Entity(tableName = "kma_level")
 public class Level {
@@ -16,7 +15,6 @@ public class Level {
         this.level_description = level_description;
     }
 
-    @NonNull
     public int getLevel_id() {
         return level_id;
     }
