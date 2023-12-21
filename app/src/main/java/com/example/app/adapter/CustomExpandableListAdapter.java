@@ -6,24 +6,22 @@ import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.example.app.CustomMenuGroupList;
-import com.example.app.CustomMenuItem;
+import com.example.app.utils.CustomMenuGroupList;
+import com.example.app.utils.CustomMenuItem;
 import com.example.app.R;
 
 import java.util.List;
 
 public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 
-    private Context context;
+    private final Context context;
     private List<CustomMenuGroupList> expandableListTitle;
     private List<CustomMenuItem> expandableListDetail;
     private OnDetailDeleteClickListener listener;

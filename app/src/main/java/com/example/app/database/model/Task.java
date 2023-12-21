@@ -2,7 +2,6 @@ package com.example.app.database.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
 
 import java.util.Date;
 

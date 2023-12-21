@@ -1,11 +1,11 @@
-package com.example.app;
+package com.example.app.utils;
 
 import java.util.List;
 
 public class CustomMenuGroupList {
     private String name;
     private int iconResourceId;
-    private List<CustomMenuItem> children;
+    private final List<CustomMenuItem> children;
 
     public CustomMenuGroupList(String name, int iconResourceId, List<CustomMenuItem> children) {
         this.name = name;

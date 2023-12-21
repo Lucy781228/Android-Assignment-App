@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.utils;
 
 public class CustomMenuItem {
     private String name;

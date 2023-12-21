@@ -8,7 +8,6 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "kma_task_file")
 public class TaskFile {
     @PrimaryKey
-    @NonNull
     @SerializedName("file_id")
     @Expose
     private int file_id;
@@ -78,7 +77,6 @@ public class TaskFile {
         this.checksum = checksum;
     }
 
-    @NonNull
     public int getFile_id() {
         return file_id;
     }

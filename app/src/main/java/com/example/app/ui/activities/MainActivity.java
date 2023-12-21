@@ -1,10 +1,9 @@
-package com.example.app;
+package com.example.app.ui.activities;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,22 +12,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.databinding.DataBindingUtil;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.app.databinding.ActivityMainBinding;
+import com.example.app.utils.CustomMenuGroupList;
+import com.example.app.utils.CustomMenuItem;
+import com.example.app.R;
 import com.example.app.adapter.CustomExpandableListAdapter;
 import com.example.app.adapter.MyPagerAdapter;
 import com.example.app.database.AndroidNCDatabase;
@@ -40,6 +37,8 @@ import com.example.app.database.viewmodel.WorkItemViewModel;
 import com.example.app.databinding.DialogAddTaskBinding;
 import com.example.app.databinding.DialogAddWorkBinding;
 import com.example.app.databinding.DialogWorkDetailsBinding;
+import com.example.app.ui.fragments.TabFragment;
+import com.example.app.ui.fragments.TaskFragment;
 import com.google.android.material.tabs.TabLayout;
 
 import java.time.LocalDate;
@@ -51,44 +50,37 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-public class MainActivity2 extends AppCompatActivity implements CustomExpandableListAdapter.OnDetailDeleteClickListener {
+public class MainActivity extends AppCompatActivity implements CustomExpandableListAdapter.OnDetailDeleteClickListener {
 
-    private DrawerLayout drawerLayout;
-    private ExpandableListView expandableListView;
     private CustomExpandableListAdapter expandableListAdapter;
     private MyPagerAdapter adapter;
-    private Toolbar toolbar;
     private Dialog dialog;
-    private EditText editText;
     private Calendar calendar;
-    private List<CustomMenuItem> menuItems = new ArrayList<>();
-    private List<CustomMenuItem> menuItemsTodo = new ArrayList<>();
-    private List<CustomMenuItem> menuItemsDoing = new ArrayList<>();
-    private List<CustomMenuItem> menuItemsDone = new ArrayList<>();
-    private List<CustomMenuItem> emptyMenuItems = new ArrayList<>();
-    private List<CustomMenuGroupList> menuGroupLists = new ArrayList<>();
-//    private List<Task> taskList = new ArrayList<>();
-    private List<Task> taskList1 = new ArrayList<>();
-    private List<Task> taskList2 = new ArrayList<>();
-    private List<Task> taskList3 = new ArrayList<>();
+    private final List<CustomMenuItem> menuItems = new ArrayList<>();
+    private final List<CustomMenuItem> menuItemsTodo = new ArrayList<>();
+    private final List<CustomMenuItem> menuItemsDoing = new ArrayList<>();
+    private final List<CustomMenuItem> menuItemsDone = new ArrayList<>();
+    private final List<CustomMenuItem> emptyMenuItems = new ArrayList<>();
+    private final List<CustomMenuGroupList> menuGroupLists = new ArrayList<>();
+    private final List<Task> taskList1 = new ArrayList<>();
+    private final List<Task> taskList2 = new ArrayList<>();
+    private final List<Task> taskList3 = new ArrayList<>();
     private int selectedWorkId = 0;
-    private int levelId = 2;
-    private TabFragment fragment1 = new TabFragment(taskList1, 1);
-    private TabFragment fragment2 = new TabFragment(taskList2, 2);
-    private TabFragment fragment3 = new TabFragment(taskList3, 3);
+    private final TabFragment fragment1 = new TabFragment(taskList1, 1);
+    private final TabFragment fragment2 = new TabFragment(taskList2, 2);
+    private final TabFragment fragment3 = new TabFragment(taskList3, 3);
     private ViewPager viewPager;
     private String username;
     private WorkItemDAO workItemDAO;
     private TaskDAO taskDAO;
-    private WorkItemViewModel workItemViewModel;
-    private TaskFragment taskFragment;
+    private ActivityMainBinding binding;
 
-//    private TaskViewModel taskViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main2);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
         Intent intent = getIntent();
         username = intent.getStringExtra("username");
@@ -98,7 +90,7 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
         taskDAO = AndroidNCDatabase.getDatabase(this).taskDAO();
 
         updateMenuGroupList();
-        workItemViewModel = new ViewModelProvider(this).get(WorkItemViewModel.class);
+        WorkItemViewModel workItemViewModel = new ViewModelProvider(this).get(WorkItemViewModel.class);
 
         workItemViewModel.getAllWorkItems().observe(this, workItems -> {
             menuItems.clear();
@@ -107,7 +99,7 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
             menuItemsDone.clear();
             menuGroupLists.clear();
             for (WorkItem w : workItems) {
-                if(w.getUser_create().equals(username)) {
+                if (w.getUser_create().equals(username)) {
                     menuItems.add(new CustomMenuItem(w.getWork_name(), w.getWork_id(), R.drawable.work_blue, w.getLevel_id()));
                     if (w.getStatus_id() == 0) {
                         menuItemsTodo.add(new CustomMenuItem(w.getWork_name(), w.getWork_id(), R.drawable.work_red, w.getLevel_id()));
@@ -123,50 +115,21 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
             getAllTask();
         });
 
-        // Initialize your views
-        drawerLayout = findViewById(R.id.drawer_layout);
-        expandableListView = findViewById(R.id.drawer_list_view);
-        toolbar = findViewById(R.id.toolbar);
-        editText = findViewById(R.id.etSearch);
-
-        editText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editText.setCursorVisible(true);
-            }
-        });
+        binding.etSearch.setOnClickListener(v -> binding.etSearch.setCursorVisible(true));
 
         // Create and set the custom adapter for the ListView
         expandableListAdapter = new CustomExpandableListAdapter(this, menuGroupLists, menuItems);
         expandableListAdapter.setOnDetailDeleteClickListener(this);
-        expandableListView.setAdapter(expandableListAdapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        binding.drawerListView.setAdapter(expandableListAdapter);
+        binding.drawerListView.setOnGroupExpandListener(this::onNoChildGroup);
 
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                onNoChildGroup(groupPosition);
-            }
-        });
+        binding.drawerListView.setOnGroupCollapseListener(this::onNoChildGroup);
 
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                onNoChildGroup(groupPosition);
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                selectedWorkId = expandableListAdapter.getChild(groupPosition, childPosition).getWorkId();
-                expandableListAdapter.setSelectedChildPosition(childPosition);
-                runOnUiThread(() -> {
-                    getAllTask();
-                });
-                return false;
-            }
+        binding.drawerListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            selectedWorkId = expandableListAdapter.getChild(groupPosition, childPosition).getWorkId();
+            expandableListAdapter.setSelectedChildPosition(childPosition);
+            runOnUiThread(this::getAllTask);
+            return false;
         });
 
         viewPager = findViewById(R.id.view_pager);
@@ -184,22 +147,20 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
 
         ImageView iconMenu = findViewById(R.id.iconMenu);
 
-        iconMenu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-                    drawerLayout.closeDrawer(GravityCompat.START);
-                } else {
-                    drawerLayout.openDrawer(GravityCompat.START);
-                }
+        iconMenu.setOnClickListener(v -> {
+            if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                binding.drawerLayout.closeDrawer(GravityCompat.START);
+            } else {
+                binding.drawerLayout.openDrawer(GravityCompat.START);
             }
         });
 
 
     }
+
     public void onNoChildGroup(int position) {
         if (position == 0) {
-            Intent loginIntent = new Intent(MainActivity2.this, Login.class);
+            Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(loginIntent);
             finish();
         } else if (position == 1) {
@@ -223,7 +184,7 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
                 taskList1.clear();
                 taskList2.clear();
                 taskList3.clear();
-                List <Task> taskList = taskDAO.getAllTasks();
+                List<Task> taskList = taskDAO.getAllTasks();
                 for (Task w : taskList) {
                     if (w.getWork_id() == selectedWorkId) {
                         int statusId = w.getStatus_id();
@@ -244,10 +205,7 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
                     adapter.notifyDataSetChanged();
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                runOnUiThread(() -> {
-                    Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+               Log.e("MainActivity", "Error: " + e.getMessage());
             }
         });
     }
@@ -264,8 +222,8 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
         // Create a new Task object
         LocalDate localDate = LocalDate.now();
         Date today = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-        Task newTask = new Task("","",1,selectedWorkId,0,today,today,
-                username,"","");
+        Task newTask = new Task("", "", 1, selectedWorkId, 0, today, today,
+                username, "", "");
         dialogBinding.setTask(newTask);
         dialogBinding.setActivity(this);
 
@@ -274,8 +232,8 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
         dialog.setContentView(dialogBinding.getRoot());
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.copyFrom(dialog.getWindow().getAttributes());
-        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT; // Adjust width as needed
-        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT; // Adjust height as needed
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
         dialog.getWindow().setAttributes(layoutParams);
         dialog.show();
     }
@@ -285,11 +243,6 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
     }
 
     public void onSaveTask(Task task) {
-        LocalDate localDate = LocalDate.now();
-//        Date today = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-//        if (!task.getTask_start().after(today)) {
-//            task.setStatus_id(2);
-//        }
         Executor executor = Executors.newSingleThreadExecutor();
         executor.execute(() -> {
             try {
@@ -300,10 +253,7 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
                     dialog.dismiss();
                 });
             } catch (Exception e) {
-                e.printStackTrace();
-                runOnUiThread(() -> {
-                    Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+                Log.e("MainActivity", "Error: " + e.getMessage());
             }
         });
     }
@@ -312,43 +262,33 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("CHÚ Ý");
         builder.setMessage("Bạn chắc chắn muốn xóa tác vụ này?");
-        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // User clicked OK, delete the item
-                Executor executor = Executors.newSingleThreadExecutor();
-                executor.execute(() -> {
-                    try {
-                        taskDAO.deleteTask(task);
+        builder.setPositiveButton("Xóa", (dialog, which) -> {
+            // User clicked OK, delete the item
+            Executor executor = Executors.newSingleThreadExecutor();
+            executor.execute(() -> {
+                try {
+                    taskDAO.deleteTask(task);
 //                        getAllTask();
-                        Toast.makeText(MainActivity2.this, "Xóa thành công" , Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        runOnUiThread(() -> {
-                            Log.e("MainActivity2", "Error: " + e.getMessage());
-                            Toast.makeText(MainActivity2.this, "Error deleting work: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        });
-                    }
-                });
-            }
+                    Toast.makeText(MainActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Log.e("MainActivity", "Error: " + e.getMessage());
+                }
+            });
         });
 
-        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
     private void openAddWorkDialog() {
         // Inflate the dialog layout using DataBinding
         DialogAddWorkBinding dialogBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(this), R.layout.dialog_add_work, null, false);
 
         // Create a new WorkItem object
+        int levelId = 2;
         WorkItem newWorkItem = new WorkItem("", "", levelId, 0, username);
         dialogBinding.setWorkItem(newWorkItem);
         dialogBinding.setActivity(this);
@@ -363,6 +303,7 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
         dialog.getWindow().setAttributes(layoutParams);
         dialog.show();
     }
+
     public void onCancelWork() {
         dialog.dismiss();
     }
@@ -372,14 +313,9 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
         executor.execute(() -> {
             try {
                 workItemDAO.insertWorkItem(workItem);
-                runOnUiThread(() -> {
-                    dialog.dismiss();
-                });
+                runOnUiThread(() -> dialog.dismiss());
             } catch (Exception e) {
-                e.printStackTrace();
-                runOnUiThread(() -> {
-                    Toast.makeText(this, "Lỗi: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+                Log.e("MainActivity", "Error: " + e.getMessage());
             }
         });
     }
@@ -391,20 +327,12 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
             try {
                 WorkItem workItem = workItemDAO.getWorkItemById(workId);
                 if (workItem != null) {
-                    runOnUiThread(() -> {
-                        displayWorkDetailsDialog(workItem);
-                    });
+                    runOnUiThread(() -> displayWorkDetailsDialog(workItem));
                 } else {
-                    runOnUiThread(() -> {
-                        Toast.makeText(this, "Không tìm thấy công việc", Toast.LENGTH_SHORT).show();
-                    });
+                    runOnUiThread(() -> Toast.makeText(this, "Không tìm thấy công việc", Toast.LENGTH_SHORT).show());
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                runOnUiThread(() -> {
-                    Log.e("MainActivity2", "Error: " + e.getMessage());
-                    Toast.makeText(this, "Error saving work: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                });
+                Log.e("MainActivity", "Error: " + e.getMessage());
             }
         });
     }
@@ -427,40 +355,27 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
         dialog.getWindow().setAttributes(layoutParams);
         dialog.show();
     }
+
     @Override
     public void onDeleteClicked(int workId) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("CHÚ Ý");
         builder.setMessage("Bạn chắc chắn muốn xóa công việc này?");
-        builder.setPositiveButton("Xóa", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Executor executor = Executors.newSingleThreadExecutor();
-                executor.execute(() -> {
-                    try {
-                        WorkItem workItem = workItemDAO.getWorkItemById(workId);
-                        workItemDAO.deleteWorkItem(workItem);
-                        taskDAO.deleteTaskByWordId(workId);
-                        runOnUiThread(() -> {
-                            Toast.makeText(MainActivity2.this, "Xóa thành công" , Toast.LENGTH_SHORT).show();
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        runOnUiThread(() -> {
-                            Log.e("MainActivity2", "Error: " + e.getMessage());
-                            Toast.makeText(MainActivity2.this, "Error deleting work: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                        });
-                    }
-                });
-            }
+        builder.setPositiveButton("Xóa", (dialog, which) -> {
+            Executor executor = Executors.newSingleThreadExecutor();
+            executor.execute(() -> {
+                try {
+                    WorkItem workItem = workItemDAO.getWorkItemById(workId);
+                    workItemDAO.deleteWorkItem(workItem);
+                    taskDAO.deleteTaskByWordId(workId);
+                    runOnUiThread(() -> Toast.makeText(MainActivity.this, "Xóa thành công", Toast.LENGTH_SHORT).show());
+                } catch (Exception e) {
+                    Log.e("MainActivity", "Error: " + e.getMessage());
+                }
+            });
         });
 
-        builder.setNegativeButton("Hủy", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builder.setNegativeButton("Hủy", (dialog, which) -> dialog.dismiss());
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -471,14 +386,14 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
         if (getCurrentFocus() != null) {
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-            editText.setCursorVisible(false);
+            binding.etSearch.setCursorVisible(false);
         }
         return super.dispatchTouchEvent(ev);
     }
 
     public void showTaskDetailsDialog(Task task) {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        taskFragment = new TaskFragment(task);
+        TaskFragment taskFragment = new TaskFragment(task);
 
         taskFragment.show(fragmentManager, "task_dialog");
     }
@@ -496,18 +411,10 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
     }
 
     private void showDatePicker() {
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-//                String formattedDate = formatDate(calendar);
-//
-//                if (taskFragment != null) {
-//                    taskFragment.updateTaskFragmentEditDates(taskFragment.getStartDate(), formattedDate);
-//                }
-            }
+        DatePickerDialog.OnDateSetListener dateSetListener = (view, year, monthOfYear, dayOfMonth) -> {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         };
 
         // Create a DatePickerDialog with the current date as default
@@ -520,8 +427,5 @@ public class MainActivity2 extends AppCompatActivity implements CustomExpandable
         ).show();
     }
 
-    public void onSpinnerItemSelected(int position) {
-        levelId = position;
-    }
 }
 

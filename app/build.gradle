@@ -29,28 +29,64 @@ android {
 
     buildFeatures {
         dataBinding true
+        viewBinding true
     }
 }
 
 dependencies {
+    // Support library for Android providing backwards compatibility for Android UI components
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
-    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
-    implementation 'com.google.android.material:material:1.9.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.room:room-runtime:2.5.2'
-    annotationProcessor 'androidx.room:room-compiler:2.5.2'
-    testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
-    implementation "commons-httpclient:commons-httpclient:3.1@jar"
-    implementation 'com.github.nextcloud:android-library:latest.release'
-    implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
-    implementation 'androidx.viewpager2:viewpager2:1.0.0'
 
+    // Retrofit is a type-safe HTTP client for Android and Java
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    // Converter for Retrofit which uses Gson for serialization to and from JSON
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
+    // OkHttp is an HTTP client for Android and Java applications
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+
+    // An OkHttp interceptor which logs HTTP request and response data
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
+
+    // Material Design components for Android
+    implementation 'com.google.android.material:material:1.9.0'
+
+    // A layout manager for Android providing constraint-based layout
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+
+    // Room is an ORM, simplifying database access while harnessing the full power of SQLite
+    implementation 'androidx.room:room-runtime:2.5.2'
+
+    // Annotation processor for Room
+    annotationProcessor 'androidx.room:room-compiler:2.5.2'
+
+    // Testing framework for Java
+    testImplementation 'junit:junit:4.13.2'
+
+    // Android extension for JUnit for running tests on Android devices
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+
+    // Espresso is a testing framework for Android to make it easy to write reliable user interface tests
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+
+    // HttpClient for Android
+    implementation 'org.apache.httpcomponents:httpclient-android:4.3.5.1'
+
+    // HttpClient is a HTTP/1.1 compliant HTTP agent implementation based on httpcomponents HttpCore
+    implementation "commons-httpclient:commons-httpclient:3.1@jar"
+
+    // Nextcloud Android library
+    implementation 'com.github.nextcloud:android-library:latest.release'
+
+    // RecyclerView is a flexible view for providing a limited window into a large data set
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
+
+    // TextDrawable allows you to create text as drawable
+    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+
+    // ViewPager2 is an improved version of the ViewPager library as part of the AndroidX Transition library
+    implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'com.github.muddassir235:connection_checker:1.7'
 }
 

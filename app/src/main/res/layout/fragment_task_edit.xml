@@ -20,7 +20,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TaskFragmentEdit">
+    tools:context=".ui.activities.fragments.EditTaskFragment">
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

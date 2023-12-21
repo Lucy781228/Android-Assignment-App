@@ -1,4 +1,4 @@
-package com.example.app;
+package com.example.app.utils;
 
 import android.graphics.Rect;
 import android.view.View;
