@@ -87,5 +87,6 @@ dependencies {
 
     // ViewPager2 is an improved version of the ViewPager library as part of the AndroidX Transition library
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'com.github.muddassir235:connection_checker:1.7'
 }
 

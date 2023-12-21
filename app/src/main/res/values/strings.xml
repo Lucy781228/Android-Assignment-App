@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name"></string>
+    <string name="app_name">Deck</string>
 
     <string name="default_work">Cá nhân</string>
     <string name="add_new_work">THÊM CÔNG VIỆC</string>
@@ -22,4 +22,11 @@
     <string name="url_server">http://192.168.1.144:8080/apps/kmaassignwork/</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cloud">this is cloud</string>
+    <string name="connect_to_server">Connect to server</string>
+    <string name="server">Sever address</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="welcome_to_server">Welcome to server</string>
 </resources>

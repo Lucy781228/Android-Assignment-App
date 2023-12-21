@@ -1,39 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/edServer"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Server"
-        android:inputType="text"
-        android:layout_marginBottom="16dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/edUsername"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Tên người dùng"
-        android:inputType="text"
-        android:layout_marginBottom="16dp" />
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_arrow_back_white_24dp"
+            tools:title="@string/login" />
 
-    <EditText
-        android:id="@+id/edPassword"
-        android:layout_width="match_parent"
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Mật khẩu"
-        android:inputType="textPassword"
-        android:layout_marginBottom="16dp" />
+        android:text="@string/welcome_to_server"
+        android:textSize="@dimen/_20ssp"
+        android:textStyle="bold"
+        android:id="@+id/welcome_tv"
+        android:paddingVertical="@dimen/_20ssp"
+        app:layout_constraintEnd_toEndOf="@id/appBarLayout"
+        app:layout_constraintStart_toStartOf="@id/appBarLayout"
+        app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/username_til"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16ddp"
+        app:endIconMode="clear_text"
+        app:helperTextEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/welcome_tv">
+
+        <EditText
+            android:id="@+id/username_edt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/username"
+            android:inputType="text" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/password_til"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_16ddp"
+        app:endIconMode="password_toggle"
+        app:helperTextEnabled="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username_til">
+
+        <EditText
+            android:id="@+id/password_edt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/password"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="match_parent"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:text="Đăng nhập"
+        android:background="@drawable/primary_button"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textSize="@dimen/_20ssp"
+        android:layout_marginTop="@dimen/_16ddp"
         android:textColor="@android:color/white"
-        android:background="@drawable/primary_button"/>
-</LinearLayout>
+        app:layout_constraintEnd_toEndOf="@id/password_til"
+        app:layout_constraintStart_toStartOf="@id/password_til"
+        app:layout_constraintTop_toBottomOf="@id/password_til" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
